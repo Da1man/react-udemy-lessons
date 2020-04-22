@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
 import './App.css';
-import Car from './Car/Car'
-import ErrorBoundary from './ErrorBoundary/ErrorBoundary'
+import Radium from "radium";
+import Car from './Car/Car';
+import ErrorBoundary from './ErrorBoundary/ErrorBoundary';
+import Counter from './Counter/Counter';
 
 class App extends Component {
 
   constructor(props) {
-    // console.log('App constructor')
     super(props)
 
     this.state = {
@@ -43,16 +44,7 @@ class App extends Component {
     this.setState({cars})
   }
 
-  // componentWillMount() {
-  //   console.log('App componentWillMount')
-  // }
-
-  // componentDidMount() {
-  //   console.log('App componentDidMount')
-  // }
-
   render() {
-    // console.log('App render')
     const divStyle = {
       textAlign: 'center',
     };
@@ -65,6 +57,7 @@ class App extends Component {
           <Car
             name={car.name}
             year={car.year}
+            index={index}
             onChangeName={event => this.onChangeName(event.target.value, index)}
             onDelete={this.deleteHandler.bind(this, index)}
           />
@@ -76,6 +69,8 @@ class App extends Component {
       <div style={divStyle}>
         {/*<h1>{this.state.pageTitle}</h1>*/}
         <h1>{this.props.title}</h1>
+        <Counter />
+        <hr/>
 
         <button
           onClick={this.toggleCarsHandler}
@@ -87,6 +82,10 @@ class App extends Component {
             border: '2px solid #ccc',
             cursor: 'pointer',
             outline: 'none',
+            marginTop: 20,
+            ':hover' : {
+              backgroundColor: "#e7e7e7",
+            }
           }}
         >
           Toggle Cars
@@ -104,4 +103,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default Radium (App);
