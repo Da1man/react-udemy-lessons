@@ -1,72 +1,46 @@
 import React, {Component} from 'react'
-import './App.scss'
-import {Route, NavLink, Switch, Redirect} from 'react-router-dom'
-import About from './About/About'
-import Cars from './Cars/Cars'
-import CarDetail from "./CarDetail/CarDetail";
+import './App.scss';
+import {connect} from 'react-redux';
+import Counter from "./Counter";
 
 class App extends Component {
 
-  state = {
-    isLoggedIn: false,
-  };
-
   render() {
-
     return (
-      <div>
-        <nav className="nav">
-          <ul>
-            <li>
-              <NavLink
-                to="/"
-                exact
-                activeClassName={'wfm-active'}
+      <div className={'App'}>
+        <h1>Счетчик <strong>{this.props.counter}</strong></h1>
 
-              >Home</NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/about"
-                activeStyle={{
-                  color: 'blue',
-                }}
-              >About</NavLink>
-            </li>
-            <li>
-              <NavLink
-                to={{
-                  pathname: '/cars',
-                  // search: '?a=1&b=2',
-                  // hash: 'wfm-hash',
-                }}
-              >Cars</NavLink>
-            </li>
-          </ul>
-        </nav>
         <hr/>
-        <div style={{textAlign: 'center'}}>
-          <h3>Is logged in: {this.state.isLoggedIn ? 'True' : 'False'}</h3>
-          <button onClick={() => this.setState({isLoggedIn: true})}>Log in</button>
+
+        <div className="Actions">
+          <button onClick={this.props.onAdd}>Добавить 1</button>
+          <button onClick={this.props.onSub}>Вычесть 1</button>
         </div>
-        <hr/>
-        <Switch>
-          <Route path={'/'} exact render={() => <h1>Home Page</h1>}/>
-          {this.state.isLoggedIn
-            ? <Route path={'/about'} component={About}/>
-            : null
-          }
-          <Route path={'/cars/:name'} component={CarDetail}/>
-          <Route path={'/cars'} component={Cars}/>
-          <Redirect to={'/'}/>
-          {/*<Route*/}
-          {/*  render={() => <h1 style={{color: 'red', textAlign:'center'}}*/}
-          {/*  >404 not found</h1>}/>*/}
-        </Switch>
+
+        <div className="Actions">
+          <button onClick={() => this.props.onAddNubmer(15)}>Добавить 15</button>
+          <button onClick={() => this.props.onAddNubmer(-17)}>Вычесть 17</button>
+        </div>
+
+        <Counter />
 
       </div>
-    );
+    )
   }
 }
 
-export default App
+function mapStateToProps(state) {
+  return {
+    counter: state.counter1.counter,
+  }
+}
+
+function mapDispathToProps(dispatch) {
+  return {
+    onAdd: () => dispatch({type: 'ADD'}),
+    onSub: () => dispatch({type: 'SUB'}),
+    onAddNubmer: number => dispatch({type: 'ADD_NUMBER', payload: number})
+  }
+}
+
+export default connect(mapStateToProps, mapDispathToProps)(App);
